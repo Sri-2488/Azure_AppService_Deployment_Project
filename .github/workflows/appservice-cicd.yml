@@ -1,0 +1,90 @@
+name: SriSolutions Azure App Service CI/CD
+on:
+  push:
+    branches:
+      - main
+ 
+workflow_dispatch:
+
+permissions:
+    contents: read
+    id-token: write
+
+jobs: 
+
+  build-and-test:
+    runs-on : ubuntu-latest
+
+    steps:
+     - name: Checkout repo
+       uses: actions/checkout@v4
+   
+     - name: Setup Python
+       uses: actions/setup-python@v5
+       with:
+         python-version: '3.12'
+
+     - name: Install dependencies
+       run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+     - name: Run automated tests
+       run: |
+         python -m pytest Testing -v
+
+     - name: Create deployment package
+       run: |
+        cd Application
+        zip -r ../app-deployment.zip app.py requirements.txt templates
+
+     - name : Upload deployment package
+       uses: actions/upload-artifact@v4
+       with:
+        name: app-deployment-package
+        path: app-deployment.zip
+      
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps: 
+
+      - name: Download deployment package
+        uses: actions/download-artifact@v4
+        with:
+          name: app-deployment-package
+
+      - name: Azure Login using OIDC
+        uses: azure/login@v2
+        with:
+          client-id : ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id : ${{ vars.AZURE_TENANT_ID }}
+          subscription-id : ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      
+      - name: Deploy application using Azure CLI
+        run: |
+          az webapp deploy \
+           --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
+            --name ${{ vars.AZURE_APP_SERVICE_NAME }} \
+            --src-path app-deployment.zip \
+            --type zip
+      
+      - name: Verify application health
+        run: |
+          URL="https://${{ vars.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+
+          for i in {1..12}; do
+            if curl --fail --silent "$URL/health"; then
+              echo "Application is healthy!"
+              exit 0
+            fi
+
+            echo "Waiting for application startup..."
+            sleep 10
+          done
+
+          echo "Health check failed"
+          exit 1
