@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="" en" >
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> SriSolutions Australia </title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fa;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: #174ea6;
+        }
+
+        .status {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>SriSolutions Australia</h1>
+
+        <h2>Cloud Hosted Application</h2>
+
+        <p>
+            Welcome to the SriSolutions company
+            application platform.
+        </p>
+
+        <p>Environment: {{ environment }}</p>
+
+        <p>Release Version: {{ release }}</p>
+
+        <p class="status">
+            Application Status: Operational
+        </p>
+
+    </div>
+</body>
+</html>
