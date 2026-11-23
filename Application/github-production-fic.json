@@ -1,0 +1,10 @@
+
+{
+  "name": "github-production-immutable",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:Sri-2488@188000521/Azure_AppService_Deployment_Project@1467284416:environment:production",
+  "description": "GitHub Actions production deployment using immutable repository identity",
+  "audiences": [
+    "api://AzureADTokenExchange"
+  ]
+}
