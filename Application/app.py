@@ -7,7 +7,7 @@ app = Flask(__name__,  template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static"))
 
 ENVIRONMENT = os.getenv('ENVIRONMENT','Development')
-RELEASE_VERSION = os.getenv('RELEASE_VERSION','2.0.0')
+RELEASE_VERSION = os.getenv('RELEASE_VERSION','1.0.0')
 
 @app.route('/')
 def home():
