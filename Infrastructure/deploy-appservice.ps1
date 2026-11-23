@@ -89,7 +89,7 @@ Write-Host " Configuring application settings..."     -ForegroundColor Green
 
 $appSettings = @(
     "ENVIRONMENT=Production"
-    "RELEASE_VERSION=1.0.0"
+    "RELEASE_VERSION=2.0.0"
 )
 
 az webapp config appsettings set `
