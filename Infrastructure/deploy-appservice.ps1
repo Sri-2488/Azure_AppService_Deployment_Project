@@ -90,6 +90,7 @@ Write-Host " Configuring application settings..."     -ForegroundColor Green
 $appSettings = @(
     "ENVIRONMENT=Production"
     "RELEASE_VERSION=2.0.0"
+    " SCM_DO_BUILD_DURING_DEPLOYMENT=true"
 )
 
 az webapp config appsettings set `
